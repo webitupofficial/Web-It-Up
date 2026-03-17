@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web It Up | Crafting Websites That Move People</title>
+  <meta name="description" content="Web It Up is a premium digital design studio crafting immersive, conversion-focused websites with stunning motion design and modern aesthetics." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  <!-- ======= PRELOADER ======= -->
+  <div id="preloader">
+    <div class="preloader-inner">
+      <canvas id="preloader-particles"></canvas>
+      <div class="rocket-wrap">
+        <svg class="rocket-svg" viewBox="0 0 80 160" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="rocketGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f5f5f5"/>
+              <stop offset="100%" stop-color="#d4af37"/>
+            </linearGradient>
+          </defs>
+          <!-- Rocket body -->
+          <path d="M40 10 C40 10 20 50 20 100 C20 120 30 130 40 135 C50 130 60 120 60 100 C60 50 40 10 40 10Z" fill="url(#rocketGrad)" stroke="#d4af37" stroke-width="1.5"/>
+          <!-- Window -->
+          <circle cx="40" cy="70" r="10" fill="#0b0b0b" stroke="#d4af37" stroke-width="1.5"/>
+          <circle cx="40" cy="70" r="5" fill="#d4af37" opacity="0.4"/>
+          <!-- Fins -->
+          <path d="M20 100 L8 125 L20 120Z" fill="#d4af37" opacity="0.8"/>
+          <path d="M60 100 L72 125 L60 120Z" fill="#d4af37" opacity="0.8"/>
+          <!-- Flame -->
+          <g class="rocket-flame">
+            <ellipse cx="40" cy="145" rx="12" ry="15" fill="#d4af37" opacity="0.9"/>
+            <ellipse cx="40" cy="148" rx="8" ry="12" fill="#f5f5f5" opacity="0.6"/>
+            <ellipse cx="40" cy="150" rx="4" ry="8" fill="#fff" opacity="0.8"/>
+          </g>
+        </svg>
+      </div>
+      <div class="preloader-text">
+        <span class="preloader-logo">Web <em>it up</em></span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <p class="loading-text">Loading Experience...</p>
+    </div>
+  </div>
+
+  <!-- ======= CUSTOM CURSOR ======= -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <canvas id="cursor-canvas"></canvas>
+
+  <!-- ======= NOISE OVERLAY ======= -->
+  <div class="noise-overlay"></div>
+
+  <!-- ======= FLOATING DOODLES ======= -->
+  <div class="doodles-layer" aria-hidden="true">
+    <!-- Arrow doodle -->
+    <svg class="doodle doodle-arrow" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 80 L80 20 M60 18 L82 18 L82 40" fill="none" stroke="#d4af37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+    </svg>
+    <!-- Star doodle -->
+    <svg class="doodle doodle-star" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="50,5 61,35 95,35 68,57 79,91 50,70 21,91 32,57 5,35 39,35" fill="none" stroke="#d4af37" stroke-width="2" opacity="0.25"/>
+    </svg>
+    <!-- Scribble circle -->
+    <svg class="doodle doodle-circle" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="45" fill="none" stroke="#d4af37" stroke-width="2" stroke-dasharray="8 6" opacity="0.2"/>
+    </svg>
+    <!-- Abstract squiggle -->
+    <svg class="doodle doodle-squiggle" viewBox="0 0 150 60" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 30 Q30 5 50 30 Q70 55 90 30 Q110 5 130 30 Q140 45 150 30" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round" opacity="0.2"/>
+    </svg>
+    <!-- Small star -->
+    <svg class="doodle doodle-star-small" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 5 L33 23 L50 20 L37 30 L45 48 L30 38 L15 48 L23 30 L10 20 L27 23Z" fill="#d4af37" opacity="0.15"/>
+    </svg>
+    <!-- Cross doodle -->
+    <svg class="doodle doodle-cross" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <line x1="15" y1="15" x2="45" y2="45" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round" opacity="0.2"/>
+      <line x1="45" y1="15" x2="15" y2="45" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round" opacity="0.2"/>
+    </svg>
+  </div>
+
+  <!-- ======= MAIN SCROLL CONTAINER ======= -->
+  <div data-scroll-container id="main-container">
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+      <a href="#" class="logo">Web <span>it up</span></a>
+      <ul class="nav-links">
+        <li><a href="#about" data-scroll-to>About</a></li>
+        <li><a href="#services" data-scroll-to>Services</a></li>
+        <li><a href="#work" data-scroll-to>Work</a></li>
+        <li><a href="#process" data-scroll-to>Process</a></li>
+        <li><a href="#contact" class="nav-cta magnetic-btn" data-scroll-to>Let's Talk</a></li>
+      </ul>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobile-nav">
+      <ul class="mobile-links">
+        <li><a href="#hero" data-scroll-to>Home</a></li>
+        <li><a href="#about" data-scroll-to>About</a></li>
+        <li><a href="#services" data-scroll-to>Services</a></li>
+        <li><a href="#work" data-scroll-to>Work</a></li>
+        <li><a href="#process" data-scroll-to>Process</a></li>
+        <li><a href="#contact" data-scroll-to>Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- ====== 1. HERO SECTION ====== -->
+    <section class="hero" id="hero" data-scroll-section>
+      <canvas id="hero-gradient-canvas"></canvas>
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="line"><span class="reveal-word">Crafting</span></span>
+          <span class="line"><span class="reveal-word">Websites That</span></span>
+          <span class="line accent-line"><span class="reveal-word">Move People.</span></span>
+        </h1>
+        <p class="hero-sub reveal-up">We design immersive digital experiences that captivate audiences and drive real results.</p>
+        <div class="hero-buttons reveal-up">
+          <a href="#contact" class="btn btn-primary magnetic-btn" data-scroll-to>
+            <span>Start a Project</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#work" class="btn btn-outline magnetic-btn" data-scroll-to>
+            <span>View Our Work</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-scroll-indicator" data-scroll data-scroll-speed="-1">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ====== 2. ABOUT STUDIO ====== -->
+    <section class="about" id="about" data-scroll-section>
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-label">
+            <span class="section-label reveal-up" data-scroll data-scroll-speed="1">/ About Us</span>
+          </div>
+          <div class="about-content">
+            <h2 class="about-heading shimmer-text" data-scroll data-scroll-speed="0.5">
+              We're a collective of designers, developers, and dreamers obsessed with crafting digital experiences that don't just look stunning — they <em>perform</em>.
+            </h2>
+            <p class="about-body reveal-up">
+              Founded on the belief that great design is invisible yet unforgettable, Web It Up merges Gen-Z creative energy with meticulous engineering. Every pixel we place, every animation we sequence, every interaction we craft — it all serves a purpose: to move people.
+            </p>
+            <div class="about-stats reveal-up">
+              <div class="stat">
+                <span class="stat-number counter" data-target="50">0</span><span class="stat-plus">+</span>
+                <span class="stat-label">Projects Delivered</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number counter" data-target="30">0</span><span class="stat-plus">+</span>
+                <span class="stat-label">Happy Clients</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number counter" data-target="5">0</span>
+                <span class="stat-label">Years of Craft</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 3. SERVICES ====== -->
+    <section class="services" id="services" data-scroll-section>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label reveal-up">/ What We Do</span>
+          <h2 class="section-title reveal-up">Services built for the<br/><em>modern web.</em></h2>
+        </div>
+        <div class="services-grid">
+          <div class="service-card" data-scroll data-scroll-speed="0.3">
+            <div class="service-icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="#d4af37" stroke-width="2"><rect x="6" y="6" width="36" height="28" rx="3"/><line x1="6" y1="38" x2="42" y2="38"/><line x1="18" y1="38" x2="18" y2="44"/><line x1="30" y1="38" x2="30" y2="44"/><line x1="14" y1="44" x2="34" y2="44"/></svg>
+            </div>
+            <h3>Web Design</h3>
+            <p>Award-worthy interfaces that blend aesthetics with usability. Every design is a statement.</p>
+            <span class="service-num">01</span>
+          </div>
+          <div class="service-card" data-scroll data-scroll-speed="0.5">
+            <div class="service-icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="#d4af37" stroke-width="2"><polyline points="16 14 8 24 16 34"/><polyline points="32 14 40 24 32 34"/><line x1="28" y1="10" x2="20" y2="38"/></svg>
+            </div>
+            <h3>Development</h3>
+            <p>Clean, performant code that scales. Built with modern frameworks and best practices.</p>
+            <span class="service-num">02</span>
+          </div>
+          <div class="service-card" data-scroll data-scroll-speed="0.3">
+            <div class="service-icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="#d4af37" stroke-width="2"><circle cx="20" cy="20" r="14"/><line x1="30" y1="30" x2="42" y2="42"/><line x1="14" y1="20" x2="26" y2="20"/><line x1="20" y1="14" x2="20" y2="26"/></svg>
+            </div>
+            <h3>SEO Optimization</h3>
+            <p>Visibility is everything. We architect your site to rank, engage, and convert organically.</p>
+            <span class="service-num">03</span>
+          </div>
+          <div class="service-card" data-scroll data-scroll-speed="0.5">
+            <div class="service-icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="#d4af37" stroke-width="2"><path d="M24 4 L24 8 M4 24 L8 24 M40 24 L44 24 M24 40 L24 44"/><circle cx="24" cy="24" r="12"/><circle cx="24" cy="24" r="5"/></svg>
+            </div>
+            <h3>Brand Identity</h3>
+            <p>From logo to language, we craft cohesive brand systems that resonate and endure.</p>
+            <span class="service-num">04</span>
+          </div>
+          <div class="service-card" data-scroll data-scroll-speed="0.3">
+            <div class="service-icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="#d4af37" stroke-width="2"><path d="M24 6 L24 2 M24 46 L24 42 M6 24 L2 24 M46 24 L42 24"/><path d="M24 14 L30 24 L24 28 L18 24Z"/><circle cx="24" cy="24" r="18"/></svg>
+            </div>
+            <h3>Performance</h3>
+            <p>Speed is non-negotiable. We optimize every byte for sub-second load times globally.</p>
+            <span class="service-num">05</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 4. FEATURED WORK ====== -->
+    <section class="work" id="work" data-scroll-section>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label reveal-up">/ Selected Work</span>
+          <h2 class="section-title reveal-up">Projects that speak<br/><em>louder than words.</em></h2>
+        </div>
+        <div class="work-grid">
+          <div class="work-card" data-scroll data-scroll-speed="0.2">
+            <div class="work-img" style="background: linear-gradient(135deg, #1a1a2e, #16213e);">
+              <div class="work-overlay">
+                <span class="work-tag">Website</span>
+                <h3>Lumina Finance</h3>
+                <p>Fintech web platform</p>
+              </div>
+            </div>
+          </div>
+          <div class="work-card" data-scroll data-scroll-speed="0.4">
+            <div class="work-img" style="background: linear-gradient(135deg, #2d132c, #801336);">
+              <div class="work-overlay">
+                <span class="work-tag">Website</span>
+                <h3>Velvet & Rose</h3>
+                <p>Luxury fashion e-commerce</p>
+              </div>
+            </div>
+          </div>
+          <div class="work-card" data-scroll data-scroll-speed="0.2">
+            <div class="work-img" style="background: linear-gradient(135deg, #0c3547, #1a5276);">
+              <div class="work-overlay">
+                <span class="work-tag">Website</span>
+                <h3>Atlas Ventures</h3>
+                <p>VC firm corporate site</p>
+              </div>
+            </div>
+          </div>
+          <div class="work-card" data-scroll data-scroll-speed="0.4">
+            <div class="work-img" style="background: linear-gradient(135deg, #1b2631, #2c3e50);">
+              <div class="work-overlay">
+                <span class="work-tag">Website</span>
+                <h3>Nexus AI</h3>
+                <p>SaaS marketing website</p>
+              </div>
+            </div>
+          </div>
+          <div class="work-card" data-scroll data-scroll-speed="0.2">
+            <div class="work-img" style="background: linear-gradient(135deg, #1c1c3c, #3a1c71);">
+              <div class="work-overlay">
+                <span class="work-tag">Website</span>
+                <h3>Zenith Health</h3>
+                <p>Healthcare booking platform</p>
+              </div>
+            </div>
+          </div>
+          <div class="work-card" data-scroll data-scroll-speed="0.4">
+            <div class="work-img" style="background: linear-gradient(135deg, #0a0a0a, #1a1a1a);">
+              <div class="work-overlay">
+                <span class="work-tag">Website</span>
+                <h3>Obsidian Studio</h3>
+                <p>Architecture firm site</p>
+              </div>
+            </div>
+          </div>
+          <div class="work-card" data-scroll data-scroll-speed="0.2">
+            <div class="work-img" style="background: linear-gradient(135deg, #1f1c2c, #928dab);">
+              <div class="work-overlay">
+                <span class="work-tag">Portfolio</span>
+                <h3>Maya Chen</h3>
+                <p>Creative director portfolio</p>
+              </div>
+            </div>
+          </div>
+          <div class="work-card" data-scroll data-scroll-speed="0.4">
+            <div class="work-img" style="background: linear-gradient(135deg, #232526, #414345);">
+              <div class="work-overlay">
+                <span class="work-tag">Portfolio</span>
+                <h3>Leo Visual</h3>
+                <p>Motion designer showcase</p>
+              </div>
+            </div>
+          </div>
+          <div class="work-card" data-scroll data-scroll-speed="0.2">
+            <div class="work-img" style="background: linear-gradient(135deg, #141e30, #243b55);">
+              <div class="work-overlay">
+                <span class="work-tag">Portfolio</span>
+                <h3>Aria Studio</h3>
+                <p>Photography portfolio</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 5. PROCESS ====== -->
+    <section class="process" id="process" data-scroll-section>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label reveal-up">/ How We Work</span>
+          <h2 class="section-title reveal-up">From concept to launch,<br/><em>seamlessly.</em></h2>
+        </div>
+        <div class="process-timeline">
+          <div class="process-line"></div>
+          <div class="process-step" data-scroll data-scroll-speed="0.2">
+            <div class="step-marker">
+              <span class="step-num">01</span>
+            </div>
+            <div class="step-content">
+              <h3>Discover</h3>
+              <p>Deep-dive into your brand, goals, and audience to define the perfect strategy.</p>
+            </div>
+          </div>
+          <div class="process-step" data-scroll data-scroll-speed="0.3">
+            <div class="step-marker">
+              <span class="step-num">02</span>
+            </div>
+            <div class="step-content">
+              <h3>Design</h3>
+              <p>Pixel-perfect wireframes and high-fidelity prototypes that bring your vision to life.</p>
+            </div>
+          </div>
+          <div class="process-step" data-scroll data-scroll-speed="0.2">
+            <div class="step-marker">
+              <span class="step-num">03</span>
+            </div>
+            <div class="step-content">
+              <h3>Develop</h3>
+              <p>Clean, blazing-fast code with smooth animations and responsive architecture.</p>
+            </div>
+          </div>
+          <div class="process-step" data-scroll data-scroll-speed="0.3">
+            <div class="step-marker">
+              <span class="step-num">04</span>
+            </div>
+            <div class="step-content">
+              <h3>Launch</h3>
+              <p>Deploy, optimize, and continuously improve for maximum performance and growth.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 6. TESTIMONIALS ====== -->
+    <section class="testimonials" id="testimonials" data-scroll-section>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label reveal-up">/ Client Love</span>
+          <h2 class="section-title reveal-up">Words from people<br/><em>we've worked with.</em></h2>
+        </div>
+        <div class="testimonial-track">
+          <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p class="testimonial-text">Web It Up completely transformed our online presence. Our conversion rate doubled within the first month of launching. The attention to detail in every micro-interaction is extraordinary.</p>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background-image: url('https://i.pravatar.cc/100?img=1')"></div>
+              <div>
+                <h4>Sarah Jenkins</h4>
+                <span>CEO, Lumina Finance</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p class="testimonial-text">The level of polish and motion design put our studio lightyears ahead of competitors. They don't just build websites — they craft digital experiences that leave lasting impressions.</p>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background-image: url('https://i.pravatar.cc/100?img=11')"></div>
+              <div>
+                <h4>Marcus Chen</h4>
+                <span>Founder, Atlas Ventures</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p class="testimonial-text">Professional, creative, and blazing fast. The mobile experience they delivered is nothing short of exceptional. Our users constantly compliment the design.</p>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background-image: url('https://i.pravatar.cc/100?img=5')"></div>
+              <div>
+                <h4>Elena Rossi</h4>
+                <span>Director, Zenith Health</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p class="testimonial-text">Working with Web It Up was a game-changer. They understood our vision instantly and delivered something far beyond our expectations. Truly world-class work.</p>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background-image: url('https://i.pravatar.cc/100?img=32')"></div>
+              <div>
+                <h4>David Park</h4>
+                <span>CTO, Nexus AI</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p class="testimonial-text">The website they built for us isn't just beautiful — it's our most powerful sales tool. We saw a 3x increase in qualified leads within the first quarter.</p>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background-image: url('https://i.pravatar.cc/100?img=23')"></div>
+              <div>
+                <h4>Amanda Torres</h4>
+                <span>CMO, Velvet & Rose</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p class="testimonial-text">Every interaction, every scroll, every transition feels intentional and premium. This is what happens when you hire people who genuinely care about craft.</p>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background-image: url('https://i.pravatar.cc/100?img=47')"></div>
+              <div>
+                <h4>James Harper</h4>
+                <span>Founder, Obsidian Studio</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 7. CTA SECTION ====== -->
+    <section class="cta-section" data-scroll-section>
+      <div class="container">
+        <div class="cta-content" data-scroll data-scroll-speed="0.5">
+          <h2 class="cta-title shimmer-text">
+            Let's Build Something<br/><em>Extraordinary.</em>
+          </h2>
+          <a href="#contact" class="btn btn-primary btn-large magnetic-btn" data-scroll-to>
+            <span>Start a Project</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== 8. FOOTER ====== -->
+    <footer class="footer" id="contact" data-scroll-section>
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-info">
+            <a href="#" class="logo footer-logo">Web <span>it up</span></a>
+            <p class="footer-tagline">Crafting digital experiences that move people. Based everywhere creativity lives.</p>
+            <a href="mailto:hello@webitup.studio" class="footer-email magnetic-btn">hello@webitup.studio</a>
+          </div>
+          <div class="footer-nav">
+            <div class="footer-col">
+              <h4>Navigate</h4>
+              <ul>
+                <li><a href="#about" class="footer-link" data-scroll-to>About</a></li>
+                <li><a href="#services" class="footer-link" data-scroll-to>Services</a></li>
+                <li><a href="#work" class="footer-link" data-scroll-to>Work</a></li>
+                <li><a href="#process" class="footer-link" data-scroll-to>Process</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Connect</h4>
+              <ul>
+                <li><a href="#" class="footer-link" target="_blank">Twitter / X</a></li>
+                <li><a href="#" class="footer-link" target="_blank">Instagram</a></li>
+                <li><a href="#" class="footer-link" target="_blank">LinkedIn</a></li>
+                <li><a href="#" class="footer-link" target="_blank">Dribbble</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; <span id="year"></span> Web It Up. All rights reserved.</p>
+          <p class="footer-credit">Designed with obsession.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
