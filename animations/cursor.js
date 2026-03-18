@@ -21,28 +21,31 @@ export function initCursor() {
   let trailY = h / 2;
 
   const trail = [];
-  const MAX_TRAIL = 50;
+  const MAX_TRAIL = 30;
   const sparkles = [];
 
-  // Resize
+  // Resize (debounced)
+  let resizeTimer;
   window.addEventListener('resize', () => {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }, 100);
   });
 
-  // Track mouse
+  // Track mouse — use transform for GPU-accelerated positioning
   window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    dot.style.left = mouseX + 'px';
-    dot.style.top = mouseY + 'px';
+    dot.style.transform = `translate(${mouseX - 5}px, ${mouseY - 5}px)`;
   }, { passive: true });
 
   // Sparkle burst on click
   window.addEventListener('mousedown', (e) => {
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 8; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 5 + 2;
+      const speed = Math.random() * 4 + 2;
       sparkles.push({
         x: e.clientX,
         y: e.clientY,
@@ -55,7 +58,7 @@ export function initCursor() {
   }, { passive: true });
 
   // Hover detection for cursor enlargement
-  const interactiveElements = document.querySelectorAll('a, button, .magnetic-btn, .work-card, .service-card');
+  const interactiveElements = document.querySelectorAll('a, button, .magnetic-btn, .service-card');
   interactiveElements.forEach(el => {
     el.addEventListener('mouseenter', () => dot.classList.add('hovering'));
     el.addEventListener('mouseleave', () => dot.classList.remove('hovering'));
