@@ -82,7 +82,7 @@ export function animatePreloader() {
           onComplete: () => {
             gsap.to(preloader, {
               opacity: 0,
-              duration: 0.6,
+              duration: 0.8,
               ease: 'power2.inOut',
               onComplete: () => {
                 preloader.style.display = 'none';
@@ -96,8 +96,8 @@ export function animatePreloader() {
           tl.to(rocketWrap, {
             y: -window.innerHeight,
             duration: 1.2,
-            ease: 'power3.in',
-            delay: 0.3,
+            ease: 'expo.in',
+            delay: 0.2,
           });
         } else {
           tl.to({}, { duration: 0.5 });
@@ -111,26 +111,32 @@ export function animatePreloader() {
  * Hero intro animations
  */
 export function animateHero() {
-  const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+  // Reset transforms for smoother animation
+  gsap.set('.hero-title .reveal-word', { y: '120%', rotateZ: 5 });
+  gsap.set('.hero-sub', { y: 40, opacity: 0 });
+  gsap.set('.hero-buttons', { y: 40, opacity: 0 });
 
   tl.to('.hero-title .reveal-word', {
-    y: 0,
-    duration: 1.4,
-    stagger: 0.15,
-    ease: 'power4.out',
+    y: '0%',
+    rotateZ: 0,
+    duration: 1.8,
+    stagger: 0.1,
+    ease: 'expo.out',
   })
   .to('.hero-sub', {
     y: 0,
     opacity: 1,
-    duration: 1,
+    duration: 1.5,
     ease: 'power3.out',
-  }, '-=0.6')
+  }, '-=1.2')
   .to('.hero-buttons', {
     y: 0,
     opacity: 1,
-    duration: 1,
+    duration: 1.5,
     ease: 'power3.out',
-  }, '-=0.7');
+  }, '-=1.3');
 
   return tl;
 }
@@ -152,9 +158,9 @@ export function initHeroCanvas() {
   });
 
   const blobs = [
-    { x: w * 0.3, y: h * 0.4, r: 300, vx: 0.5, vy: 0.3, color: 'rgba(212, 175, 55, 0.08)' },
-    { x: w * 0.7, y: h * 0.6, r: 250, vx: -0.4, vy: -0.5, color: 'rgba(212, 175, 55, 0.05)' },
-    { x: w * 0.5, y: h * 0.3, r: 200, vx: 0.3, vy: 0.6, color: 'rgba(245, 230, 163, 0.04)' },
+    { x: w * 0.3, y: h * 0.4, r: 300, vx: 0.4, vy: 0.2, color: 'rgba(212, 175, 55, 0.08)' },
+    { x: w * 0.7, y: h * 0.6, r: 250, vx: -0.3, vy: -0.4, color: 'rgba(212, 175, 55, 0.05)' },
+    { x: w * 0.5, y: h * 0.3, r: 200, vx: 0.2, vy: 0.5, color: 'rgba(245, 230, 163, 0.04)' },
   ];
 
   function drawCanvas() {
@@ -191,7 +197,7 @@ export function initScrollAnimations(scrollContainer) {
     const trigger = triggerSelector || selector;
 
     elements.forEach((el, i) => {
-      gsap.set(el, { opacity: 1, y: 0, x: 0 }); // ensure visible baseline
+      gsap.set(el, { opacity: 1, y: 0, x: 0, scale: 1 }); // ensure visible baseline
     });
 
     gsap.fromTo(elements,
@@ -200,15 +206,16 @@ export function initScrollAnimations(scrollContainer) {
         scrollTrigger: {
           trigger: typeof trigger === 'string' ? document.querySelector(trigger) || elements[0] : trigger,
           scroller: scroller,
-          start: 'top 88%',
+          start: 'top 85%',
           once: true,
         },
         y: 0,
         x: 0,
+        scale: 1,
         opacity: 1,
-        duration: fromVars.duration || 0.9,
-        stagger: fromVars.stagger || 0.12,
-        ease: 'power3.out',
+        duration: fromVars.duration || 1.2,
+        stagger: fromVars.stagger || 0.1,
+        ease: 'expo.out',
         clearProps: 'transform,opacity',
       }
     );
@@ -216,61 +223,64 @@ export function initScrollAnimations(scrollContainer) {
 
   // Generic reveal-up elements
   gsap.utils.toArray('.reveal-up').forEach(el => {
-    gsap.to(el, {
-      scrollTrigger: {
-        trigger: el,
-        scroller: scroller,
-        start: 'top 90%',
-        once: true,
-      },
-      y: 0,
-      opacity: 1,
-      duration: 1,
-      ease: 'power3.out',
-    });
+    gsap.fromTo(el,
+      { y: 60, opacity: 0 },
+      {
+        scrollTrigger: {
+          trigger: el,
+          scroller: scroller,
+          start: 'top 90%',
+          once: true,
+        },
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'expo.out',
+      }
+    );
   });
 
   // Section labels
   gsap.utils.toArray('.section-label').forEach(el => {
     gsap.fromTo(el,
-      { x: -30, opacity: 0 },
+      { x: -40, opacity: 0 },
       {
         scrollTrigger: { trigger: el, scroller: scroller, start: 'top 92%', once: true },
-        x: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+        x: 0, opacity: 1, duration: 1, ease: 'expo.out',
       }
     );
   });
 
-  // Service cards
-  scrollReveal('.service-card', { y: 50, stagger: 0.12, duration: 0.8 }, '.services-grid');
+  // Service cards - slightly more dynamic with scale
+  scrollReveal('.service-card', { y: 80, scale: 0.95, stagger: 0.1, duration: 1.2 }, '.services-grid');
 
   // Work cards
-  scrollReveal('.work-card', { y: 50, stagger: 0.08, duration: 0.8 }, '.work-grid');
+  scrollReveal('.work-card', { y: 60, scale: 0.98, stagger: 0.1, duration: 1.2 }, '.work-grid');
 
   // Process steps
-  scrollReveal('.process-step', { x: -40, stagger: 0.18, duration: 0.8 }, '.process-timeline');
+  scrollReveal('.process-step', { x: -50, opacity: 0, stagger: 0.15, duration: 1.2 }, '.process-timeline');
 
   // Testimonial cards
-  scrollReveal('.testimonial-card', { y: 40, stagger: 0.12, duration: 0.8 }, '.testimonial-track');
+  scrollReveal('.testimonial-card', { y: 50, scale: 0.95, stagger: 0.1, duration: 1.2 }, '.testimonial-track');
 
   // CTA
   const ctaTitle = document.querySelector('.cta-title');
   if (ctaTitle) {
     gsap.fromTo(ctaTitle,
-      { y: 50, opacity: 0 },
+      { y: 60, opacity: 0, scale: 0.95 },
       {
         scrollTrigger: { trigger: '.cta-section', scroller, start: 'top 80%', once: true },
-        y: 0, opacity: 1, duration: 1.2, ease: 'power4.out',
+        y: 0, opacity: 1, scale: 1, duration: 1.5, ease: 'expo.out',
       }
     );
   }
 
   // Footer
   gsap.fromTo('.footer-top, .footer-bottom',
-    { y: 30, opacity: 0 },
+    { y: 40, opacity: 0 },
     {
-      scrollTrigger: { trigger: '.footer', scroller, start: 'top 90%', once: true },
-      y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: 'power3.out',
+      scrollTrigger: { trigger: '.footer', scroller, start: 'top 95%', once: true },
+      y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: 'power3.out',
     }
   );
 
@@ -281,8 +291,8 @@ export function initScrollAnimations(scrollContainer) {
       {
         scrollTrigger: { trigger: el, scroller, start: 'top 85%', once: true },
         backgroundPosition: '-200% 50%',
-        duration: 2.5,
-        ease: 'power1.inOut',
+        duration: 3,
+        ease: 'power2.inOut',
       }
     );
   });
@@ -300,19 +310,22 @@ export function initCounters(scrollContainer) {
   ScrollTrigger.create({
     trigger: '.about-stats',
     scroller: scrollContainer || undefined,
-    start: 'top 90%',
+    start: 'top 85%',
     once: true,
     onEnter: () => {
       if (hasCounted) return;
       hasCounted = true;
       counters.forEach(counter => {
         const target = +counter.getAttribute('data-target');
-        gsap.to(counter, {
-          innerHTML: target,
-          duration: 2.5,
-          snap: { innerHTML: 1 },
-          ease: 'power2.out',
-        });
+        gsap.fromTo(counter, 
+          { innerHTML: 0 },
+          {
+            innerHTML: target,
+            duration: 3,
+            snap: { innerHTML: 1 },
+            ease: 'expo.out',
+          }
+        );
       });
     }
   });
@@ -337,8 +350,8 @@ export function initDoodleParallax() {
       gsap.to(d, {
         x: mx * speed,
         y: my * speed,
-        duration: 1.5,
-        ease: 'power2.out',
+        duration: 2,
+        ease: 'power3.out',
         overwrite: 'auto',
       });
     });
