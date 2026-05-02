@@ -18,7 +18,7 @@ export function initSmoothScroll() {
     el: container,
     smooth: true,
     multiplier: 1,
-    lerp: 0.08,
+    lerp: 0.06, // Reduced from 0.08 for a more premium, buttery-smooth scroll
     class: 'is-revealed',
     smartphone: { smooth: false },
     tablet: { smooth: true, breakpoint: 1024 },
