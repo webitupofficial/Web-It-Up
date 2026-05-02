@@ -43,9 +43,15 @@ export function initCursor() {
 
   // Sparkle burst on click
   window.addEventListener('mousedown', (e) => {
-    for (let i = 0; i < 8; i++) {
+    // Increase dot size slightly on click
+    dot.style.transform = `translate(${mouseX - 5}px, ${mouseY - 5}px) scale(0.8)`;
+    setTimeout(() => {
+      dot.style.transform = `translate(${mouseX - 5}px, ${mouseY - 5}px) scale(1)`;
+    }, 150);
+
+    for (let i = 0; i < 12; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 4 + 2;
+      const speed = Math.random() * 5 + 2;
       sparkles.push({
         x: e.clientX,
         y: e.clientY,
@@ -95,9 +101,9 @@ export function initCursor() {
       s.x += s.vx;
       s.y += s.vy;
       s.vy += 0.08;
-      s.vx *= 0.97;
-      s.vy *= 0.97;
-      s.life -= 0.025;
+      s.vx *= 0.95; // Slightly more friction
+      s.vy *= 0.95;
+      s.life -= 0.02;
 
       if (s.life <= 0) {
         sparkles.splice(i, 1);
@@ -123,21 +129,43 @@ export function initMagneticButtons() {
   if (isTouchDevice) return;
 
   document.querySelectorAll('.magnetic-btn').forEach(btn => {
+    // Add inner text wrapper if not exists for parallax effect
+    if (!btn.querySelector('.magnetic-text')) {
+      const text = btn.innerHTML;
+      btn.innerHTML = `<span class="magnetic-text" style="display:inline-flex; align-items:center; gap:0.6rem; transition:transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); pointer-events:none;">${text}</span>`;
+    }
+    
+    const textSpan = btn.querySelector('.magnetic-text');
+
     btn.addEventListener('mousemove', (e) => {
       const rect = btn.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
       const dx = e.clientX - cx;
       const dy = e.clientY - cy;
-      const strength = 25;
+      
+      const strength = 20; // Container movement strength
+      const textStrength = 10; // Text movement strength (parallax)
 
       btn.style.transform = `translate(${(dx / rect.width) * strength}px, ${(dy / rect.height) * strength}px)`;
+      if (textSpan) {
+        textSpan.style.transform = `translate(${(dx / rect.width) * textStrength}px, ${(dy / rect.height) * textStrength}px)`;
+      }
     });
 
     btn.addEventListener('mouseleave', () => {
       btn.style.transform = 'translate(0, 0)';
-      btn.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-      setTimeout(() => { btn.style.transition = ''; }, 500);
+      btn.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      
+      if (textSpan) {
+        textSpan.style.transform = 'translate(0, 0)';
+        textSpan.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      }
+
+      setTimeout(() => { 
+        btn.style.transition = ''; 
+        if (textSpan) textSpan.style.transition = 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
+      }, 600);
     });
   });
 }
